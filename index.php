@@ -24,6 +24,14 @@ $forumPhp     = [
     'inscrits'      => 0,
     'dateEvenement' => '12/10/2023'
 ];
+$meetupCefim = [
+    'nom'      => 'Meetup PHP Tours',
+    'lieu'     => 'CEFIM',
+    'places'   => 50,
+    'inscrits' => 0,
+    'prix'     => 0,
+    'dateEvenement' => '19/01/2023'
+];
 
 function prendrePlaces(int $nbPlaces, array &$evenement): int
 {
@@ -38,28 +46,4 @@ function calculGains(array $evenement): void
     $nom = str_ireplace('afup', 'AFUP', $evenement['nom']);
 
     echo "Le nombre de places vendues pour $nom nous rapporte $gain € !";
-}
-
-// Ajouter tous les événements créés à un tableau qui les regroupera tous.
-$evenements = [];
-array_push($evenements, $afupDayLille, $afupDayLyon, $forumPhp);
-
-//echo count($evenements);// Comptez le nombre d'événements.
-
-// Créer et ajouter un nouvel événement au tableau d'événements qui aura lieu au CEFIM.
-$evenements[] = [
-    'nom'      => 'Meetup PHP Tours',
-    'lieu'     => 'CEFIM',
-    'places'   => 50,
-    'inscrits' => 0,
-    'prix'     => 0,
-    'dateEvenement' => '19/01/2023'
-];
-
-var_dump($evenements);
-// Recherchez dans votre liste d'événements la date de l'événement qui aura lieu au CEFIM.
-foreach($evenements as $evenement) {
-    if(array_search('CEFIM', $evenement)) {
-        echo $evenement['dateEvenement'];
-    }
 }
