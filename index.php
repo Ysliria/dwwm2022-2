@@ -1,42 +1,22 @@
 <?php
-$events = [
-        [
-                'nom'           => 'Afup Day Lille',
-                'lieu'          => 'Université Catholique de Lille',
-                'places'        => 120,
-                'prix'          => 85,
-                'inscrits'      => 0,
-                'dateEvenement' => '12/05/2023'
-        ],
-        [
-                'nom'           => 'AFUP Day 2023 Lyon',
-                'lieu'          => 'CPE Lyon',
-                'places'        => 160,
-                'prix'          => 85,
-                'inscrits'      => 0,
-                'dateEvenement' => '12/05/2023'
-        ],
-        [
-                'nom'           => 'Forum PHP 2023',
-                'lieu'          => 'Disneyland Paris',
-                'places'        => 800,
-                'prix'          => 340,
-                'inscrits'      => 0,
-                'dateEvenement' => '12/10/2023'
-        ],
-        [
-                'nom'           => 'Meetup PHP Tours',
-                'lieu'          => 'CEFIM',
-                'places'        => 50,
-                'inscrits'      => 0,
-                'prix'          => 0,
-                'dateEvenement' => '19/01/2023'
-        ]
-];
+session_start();
+
+require_once 'database/dbConnect.php';
+require_once 'database/evenement.php';
+
+$events = getAllEvent($db);
+
 include_once 'includes/header.php'; ?>
 
+<?php
+if (isset($_SESSION['alert'])) {
+    echo '<div class="alert alert-' . $_SESSION['alert']['alert'] . '">' . $_SESSION['alert']['message'] . '</div>';
+    unset($_SESSION['alert']);
+}
+?>
+
     <main class="container mt-5">
-            <h1>Nos prochains événements</h1>
+        <h1>Nos prochains événements</h1>
 
         <hr>
 
@@ -59,16 +39,15 @@ include_once 'includes/header.php'; ?>
             <tbody>
             <?php foreach ($events as $event) {?>
                 <tr>
-                    <td class="col-2"><?=$event['dateEvenement']?></td>
+                    <td class="col-2"><?=$event['date_evenement']?></td>
                     <td class="col-3"><?=$event['nom']?></td>
                     <td><?=$event['lieu']?></td>
                     <td class="col-1"><?=$event['prix']?> €</td>
                     <td class="col-2">
-                        <button class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <a href="details.php?id=<?=$event['id']?>" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></a>
                         <button class="btn btn-success"><i class="fa-solid fa-user-plus"></i></button>
                         <button class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button>
                         <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-
                     </td>
                 </tr>
             <?php
