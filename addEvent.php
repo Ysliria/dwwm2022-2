@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+//if (!isset($_SESSION['user'])) {
+//    header('Location: /login.php');
+//}
+
 include_once 'includes/header.php';
 ?>
     <main class="container mt-5">
@@ -39,7 +45,6 @@ include_once 'includes/header.php';
             <button type="submit" class="float-end btn btn-primary mt-2">Créer</button>
         </form>
     </main>
-
 
 <?php
 include_once 'includes/footer.php';

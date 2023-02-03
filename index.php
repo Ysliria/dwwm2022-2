@@ -1,10 +1,11 @@
 <?php
+
 session_start();
 
 require_once 'database/dbConnect.php';
-require_once 'database/evenement.php';
+require_once 'database/evenementRepository.php';
 
-$events = getAllEvent($db);
+$events = getNextEvents($db);
 
 include_once 'includes/header.php'; ?>
 
@@ -16,62 +17,106 @@ if (isset($_SESSION['alert'])) {
 ?>
 
     <main class="container mt-5">
-        <h1>Nos prochains événements</h1>
+        <h1>Bientôt !</h1>
 
         <hr>
 
-        <div class="row">
-            <a href="addEvent.php" class="btn btn-primary col-2 offset-10">Ajouter un événement</a>
-        </div>
-
-        <table class="table table-hover mt-5">
-            <caption>Liste de nos événements</caption>
-            <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Lieu</th>
-                <th scope="col">Prix</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <?php foreach ($events as $event) {?>
-                <tr>
-                    <td class="col-2"><?=$event['date_evenement']?></td>
-                    <td class="col-3"><?=$event['nom']?></td>
-                    <td><?=$event['lieu']?></td>
-                    <td class="col-1"><?=$event['prix']?> €</td>
-                    <td class="col-2">
-                        <a href="details.php?id=<?=$event['id']?>" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></a>
-                        <button class="btn btn-success"><i class="fa-solid fa-user-plus"></i></button>
-                        <button class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button>
-                        <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
+        <div class="row g-3 mt-3 pb-3">
             <?php
+            foreach ($events as $event) { ?>
+                <div class="col-4">
+                    <div class="card border-primary">
+                        <h3 class="card-header"><?= $event['nom'] ?></h3>
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $event['lieu'] ?></h5>
+                            <h6 class="card-subtitle text-muted"><?= $event['date_evenement'] ?></h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad consequatur est iure maxime pariatur repudiandae tempora? Aliquam commodi consectetur eum, ex excepturi facilis maxime omnis quis sapiente suscipit, tempora temporibus?
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <a href="#" class="card-link">S'inscrire !</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <?php
+                            if ($event['inscrit'] === $event['places']) {
+                                echo 'Il n\'y a plus de place';
+                            } else {
+                                echo 'Il nous reste ' . $event['places'] - $event['inscrit'] . ' places !';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <?php
             }
             ?>
-            </tbody>
-        </table>
+        </div>
+
+        <hr>
+
+        <section class="row mt-3">
+            <h2>Actualité</h2>
+
+            <article class="mt-3">
+                <h3>Lorem</h3>
+
+                <figure>
+                    <blockquote class="blockquote">
+                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias asperiores cum eius eos pariatur quia quis suscipit, ullam voluptatibus? Aliquam eius tenetur voluptate? Accusantium adipisci dignissimos dolorum facilis rerum?</p>
+                    </blockquote>
+
+                    <figcaption class="blockquote-footer">
+                        Someone famous in <cite title="Source Title">Source Title</cite>
+                    </figcaption>
+                </figure>
+            </article>
+
+            <article class="mt-3">
+                <h3>Lorem</h3>
+
+                <figure>
+                    <blockquote class="blockquote">
+                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias asperiores cum eius eos pariatur quia quis suscipit, ullam voluptatibus? Aliquam eius tenetur voluptate? Accusantium adipisci dignissimos dolorum facilis rerum?</p>
+                    </blockquote>
+
+                    <figcaption class="blockquote-footer">
+                        Someone famous in <cite title="Source Title">Source Title</cite>
+                    </figcaption>
+                </figure>
+            </article>
+
+            <article class="mt-3">
+                <h3>Lorem</h3>
+
+                <figure>
+                    <blockquote class="blockquote">
+                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias asperiores cum eius eos pariatur quia quis suscipit, ullam voluptatibus? Aliquam eius tenetur voluptate? Accusantium adipisci dignissimos dolorum facilis rerum?</p>
+                    </blockquote>
+
+                    <figcaption class="blockquote-footer">
+                        Someone famous in <cite title="Source Title">Source Title</cite>
+                    </figcaption>
+                </figure>
+            </article>
+
+            <article class="mt-3">
+                <h3>Lorem</h3>
+
+                <figure>
+                    <blockquote class="blockquote">
+                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias asperiores cum eius eos pariatur quia quis suscipit, ullam voluptatibus? Aliquam eius tenetur voluptate? Accusantium adipisci dignissimos dolorum facilis rerum?</p>
+                    </blockquote>
+
+                    <figcaption class="blockquote-footer">
+                        Someone famous in <cite title="Source Title">Source Title</cite>
+                    </figcaption>
+                </figure>
+            </article>
+        </section>
     </main>
 
 <?php
 include_once 'includes/footer.php';
-
-
-function prendrePlaces(int $nbPlaces, array &$evenement): int
-{
-    $evenement['inscrits'] += $nbPlaces;
-
-    return $evenement['places'] - $evenement['inscrits'];
-}
-
-function calculGains(array $evenement): void
-{
-    $gain = $evenement['inscrits'] * $evenement['prix'];
-    $nom  = str_ireplace('afup', 'AFUP', $evenement['nom']);
-
-    echo "Le nombre de places vendues pour $nom nous rapporte $gain € !";
-}
